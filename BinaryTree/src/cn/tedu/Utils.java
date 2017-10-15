@@ -17,6 +17,24 @@ import java.util.UUID;
  */
 public class Utils {
     /**
+      * @Method compare()
+      * 比较两个整形对象大小 
+      * 如果a>b返回   true 
+      * 如果a<b返回  false
+      * @return boolean
+     */
+    public static boolean compare(int a, int b)
+    {
+        if (a > b)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    /**
      * 
      * @return 获取23位时间+四位随机数的编码
      */
