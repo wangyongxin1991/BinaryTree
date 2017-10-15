@@ -3,6 +3,8 @@
  */
 package cn.tedu;
 
+import java.util.Stack;
+
 /**
  * @ClassName BinaryTreeDemo
  * @Describe TODO
@@ -53,7 +55,7 @@ public class BinaryTreeDemo
         System.out.println(p.getKey() + " ");
     }
 
-    // 递归实现前序遍历  
+    // 递归实现前中后序遍历  
     protected static void preorder(BTNode p)
     {
         if (p != null)
@@ -66,12 +68,36 @@ public class BinaryTreeDemo
         }
     }
 
+
+    // 非递归实现前中后序遍历
+    public static void unrecursion(BTNode p)
+    {
+        Stack<BTNode> stack = new Stack<>();
+        if (p != null)
+        {
+            //压栈
+            stack.push(p);
+            while (!stack.empty())
+            {
+                //出栈
+                p = stack.pop();
+                visit(p);
+                if (Utils.objectIsNotEmpty(p))
+                unrecursion(p.getLeft());
+                if (Utils.objectIsNotEmpty(p))
+                unrecursion(p.getRight());
+            }
+
+        }
+
+    }
+
     public static void main(String[] args)
     {
         BinaryTreeDemo binary = new BinaryTreeDemo(init());
 
         System.out.print(" 递归实现前序遍历:");
-        preorder(binary.getRoot());
+        unrecursion(binary.getRoot());
         System.out.println("\n");
     }
 
