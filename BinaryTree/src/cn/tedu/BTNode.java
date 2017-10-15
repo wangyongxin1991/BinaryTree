@@ -12,7 +12,7 @@ package cn.tedu;
  */
 public class BTNode
 {
-    //数据
+    //数据 
     private String key;
     //左右节点
     private BTNode left, right;
