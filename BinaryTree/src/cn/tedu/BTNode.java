@@ -5,7 +5,7 @@ package cn.tedu;
 
 /**
  * @ClassName BTNode
- * @Describe 二叉树节点 1
+ * @Describe 二叉树节点 
  * 
  * @author  wyx
  * @date 2017年10月12日 下午10:54:25
