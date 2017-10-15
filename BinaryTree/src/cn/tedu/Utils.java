@@ -10,17 +10,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 /**
- * æ‰€æœ‰å·¥å…·æ–¹æ³•å¤§æ‚çƒ©
+ * ËùÓĞ¹¤¾ß·½·¨´óÔÓ»â
  * 
- * @author åˆ˜é’æ¾
+ * @author ÁõÇàËÉ
  * 
  */
 public class Utils {
     /**
       * @Method compare()
-      * æ¯”è¾ƒä¸¤ä¸ªæ•´å½¢å¯¹è±¡å¤§å° 
-      * å¦‚æœa>bè¿”å›   true 
-      * å¦‚æœa<bè¿”å›  false
+      * ±È½ÏÁ½¸öÕûĞÎ¶ÔÏó´óĞ¡ 
+      * Èç¹ûa>b·µ»Ø   true 
+      * Èç¹ûa<b·µ»Ø  false
       * @return boolean
      */
     public static boolean compare(int a, int b)
@@ -36,42 +36,42 @@ public class Utils {
 
     /**
      * 
-     * @return è·å–23ä½æ—¶é—´+å››ä½éšæœºæ•°çš„ç¼–ç 
+     * @return »ñÈ¡23Î»Ê±¼ä+ËÄÎ»Ëæ»úÊıµÄ±àÂë
      */
     public static String getRandomCode()
     {
         String randomCode = null;
         SimpleDateFormat sDateFormat;
         Random r = new Random();
-        int rannum = (int) (r.nextDouble() * (99999 - 10000 + 1)) + 10000; // è·å–éšæœºæ•°
-        sDateFormat = new SimpleDateFormat("yyyyMMddHHmmsssss"); // æ—¶é—´æ ¼å¼åŒ–çš„æ ¼å¼
+        int rannum = (int) (r.nextDouble() * (99999 - 10000 + 1)) + 10000; // »ñÈ¡Ëæ»úÊı
+        sDateFormat = new SimpleDateFormat("yyyyMMddHHmmsssss"); // Ê±¼ä¸ñÊ½»¯µÄ¸ñÊ½
         randomCode = sDateFormat.format(new Date()) + rannum;
         return randomCode;
     }
     /**
-     * è¿”å›éšæœº8ä½å­—ç¬¦ä¸²ã€‚
+     * ·µ»ØËæ»ú8Î»×Ö·û´®¡£
      * 
-     * @return è¿”å›éšæœº8ä½å­—ç¬¦ä¸²
+     * @return ·µ»ØËæ»ú8Î»×Ö·û´®
      */
     public static String get8RandomCodeForUUID()
     {
         return UUID.randomUUID().toString().toUpperCase().substring(0, 8);
     }
     /**
-     * è¿”å›éšæœºä¼ å…¥çš„bitNumä½å­—ç¬¦ä¸²ã€‚
+     * ·µ»ØËæ»ú´«ÈëµÄbitNumÎ»×Ö·û´®¡£
      * @param bitNum
-     *            ä¼ å…¥è¿”å›çš„æ•´å½¢ä½æ•°
-     * @return è¿”å›éšæœºbitNumä½å­—ç¬¦ä¸²
+     *            ´«Èë·µ»ØµÄÕûĞÎÎ»Êı
+     * @return ·µ»ØËæ»úbitNumÎ»×Ö·û´®
      */
     public static String getRandomCodeForUUID(int bitNum)
     {
         return UUID.randomUUID().toString().toUpperCase().substring(0, bitNum);
     }
     /**
-     * åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦ä¸ºç©º ï¼Œ ç©ºï¼šfalse ; éç©ºï¼štrueã€‚
+     * ÅĞ¶Ï×Ö·û´®ÊÇ·ñÎª¿Õ £¬ ¿Õ£ºfalse ; ·Ç¿Õ£ºtrue¡£
      * @param ch
-     *            ä¼ å…¥å­—ç¬¦ä¸²
-     * @return çœŸå‡
+     *            ´«Èë×Ö·û´®
+     * @return Õæ¼Ù
      */
     public static boolean stringIsNotEmpty(String ch)
     {
@@ -84,10 +84,10 @@ public class Utils {
         }
     }
     /**
-     * åˆ¤æ–­Objectå¯¹è±¡ä¸ä¸ºç©º ï¼Œ ç©ºï¼šfalse ; éç©ºï¼štrueã€‚
+     * ÅĞ¶ÏObject¶ÔÏó²»Îª¿Õ £¬ ¿Õ£ºfalse ; ·Ç¿Õ£ºtrue¡£
      * @param obj
-     *            ä¼ å…¥å¯¹è±¡
-     * @return çœŸå‡
+     *            ´«Èë¶ÔÏó
+     * @return Õæ¼Ù
      */
     public static boolean objectIsNotEmpty(Object obj)
     {
@@ -100,10 +100,10 @@ public class Utils {
         }
     }
     /**
-     * åˆ¤æ–­Objectå¯¹è±¡ä¸ºç©º ï¼Œ ç©ºï¼štrue; éç©ºï¼šfalseã€‚
+     * ÅĞ¶ÏObject¶ÔÏóÎª¿Õ £¬ ¿Õ£ºtrue; ·Ç¿Õ£ºfalse¡£
      * @param obj
-     *            ä¼ å…¥å¯¹è±¡
-     * @return çœŸå‡
+     *            ´«Èë¶ÔÏó
+     * @return Õæ¼Ù
      */
     public static boolean objectIsEmpty(Object obj)
     {
@@ -116,10 +116,10 @@ public class Utils {
         }
     }
     /**
-     * åˆ¤æ–­é›†åˆæ˜¯å¦ä¸ºç©ºï¼Œ ç©ºï¼šfalse ; éç©ºï¼štrueã€‚
+     * ÅĞ¶Ï¼¯ºÏÊÇ·ñÎª¿Õ£¬ ¿Õ£ºfalse ; ·Ç¿Õ£ºtrue¡£
      * @param coll
-     *            ä¼ å…¥é›†åˆ
-     * @return çœŸå‡
+     *            ´«Èë¼¯ºÏ
+     * @return Õæ¼Ù
      */
     public static boolean collectionIsNotEmpty(Collection<?> coll)
     {
@@ -132,7 +132,7 @@ public class Utils {
         }
     }
     /**
-     * @return è·å–MD5ç¼–ç å­—ç¬¦ä¸²å€¼ï¼Œç®—æ³•ä¸å¯é€†ã€‚
+     * @return »ñÈ¡MD5±àÂë×Ö·û´®Öµ£¬Ëã·¨²»¿ÉÄæ¡£
      */
     public final static String EncodeMd5(String s)
     {
@@ -160,8 +160,8 @@ public class Utils {
         }
     }
     /**
-     * @param urls  å¸¦æœ‰â€œ@â€ç»„åˆçš„â€œï¼Œâ€åˆ†å‰²çš„URLå­—ç¬¦ä¸²
-     * @return è¿”å›ä¸€ä¸ªä¸å¸¦@åé¢ç»„åˆä¿¡æ¯çš„å¸¦æœ‰â€œï¼Œâ€çš„URlç»„åˆå­—ç¬¦ä¸²
+     * @param urls  ´øÓĞ¡°@¡±×éºÏµÄ¡°£¬¡±·Ö¸îµÄURL×Ö·û´®
+     * @return ·µ»ØÒ»¸ö²»´ø@ºóÃæ×éºÏĞÅÏ¢µÄ´øÓĞ¡°£¬¡±µÄURl×éºÏ×Ö·û´®
      */
     public static String getUrlsValueByDeal(String urls)
     {
@@ -192,12 +192,12 @@ public class Utils {
         }
     }
     /**
-     * åˆ¤æ–­exsitsUrlsSträ¸­æ˜¯å¦åŒ…å«åœ°å€deleteURLã€‚
+     * ÅĞ¶ÏexsitsUrlsStrÖĞÊÇ·ñ°üº¬µØÖ·deleteURL¡£
      * @param exsitsUrlsStr
-     *            ä¼ å…¥åŒ…å«url
+     *            ´«Èë°üº¬url
      * @param deleteURL
-     *            ä¼ å…¥æŸ¥æ‰¾url
-     * @return çœŸå‡
+     *            ´«Èë²éÕÒurl
+     * @return Õæ¼Ù
      */
     public static boolean isFindUrl(String exsitsUrlsStr, String deleteURL)
     {
@@ -214,7 +214,7 @@ public class Utils {
         return isFind;
     }
     /**
-     * å°†æ¡ä»¶ä¸­æ±‰å­—å¸¦è‹±æ–‡çš„'æ›¿æ¢æˆ" é¿å…å’Œåˆsqlçš„çš„'äº§ç”Ÿå†²çªï¼Œé€‚ç”¨äºOracle
+     * ½«Ìõ¼şÖĞºº×Ö´øÓ¢ÎÄµÄ'Ìæ»»³É" ±ÜÃâºÍºÏsqlµÄµÄ'²úÉú³åÍ»£¬ÊÊÓÃÓÚOracle
      * @param condition
      * @return 
      */
@@ -223,7 +223,7 @@ public class Utils {
         return condition.replaceAll("'", "''");
     }
     /**
-     * è½¬æ¢å­—ç¬¦ä¸²ä¸ºint è½¬æ¢å¤±è´¥è¿”å›defaultVal
+     * ×ª»»×Ö·û´®Îªint ×ª»»Ê§°Ü·µ»ØdefaultVal
      * @param str
      * @param defaultVal
      * @return
@@ -239,9 +239,9 @@ public class Utils {
         }
     }
     /**
-     * æŠŠé›†åˆè½¬æ¢æˆå­—ç¬¦ä¸²ï¼Œä»¥æ‹¼æ¥ç¬¦çš„å½¢å¼åˆ†å¼€
-     * @param list  é›†åˆ
-     * @param str åˆ†éš”ç¬¦
+     * °Ñ¼¯ºÏ×ª»»³É×Ö·û´®£¬ÒÔÆ´½Ó·ûµÄĞÎÊ½·Ö¿ª
+     * @param list  ¼¯ºÏ
+     * @param str ·Ö¸ô·û
      * @return
      */
     /* public static String listToString(List list, String str)
@@ -256,10 +256,10 @@ public class Utils {
         }
     }*/
     /**
-     * åˆ é™¤åŸæœ‰çš„urlä¸²ä¸­çš„ä¼ å…¥çš„åˆ é™¤åœ°å€deleteURLï¼Œå¹¶æ›´æ–°æœ€æ–°çš„URLä¸²è¿”å›
-     * @param fileUploadRoot æ ¹è·¯å¾„ï¼Œä¸Šä¼ æ–‡ä»¶è·¯å¾„ï¼Œç½‘ç»œæ˜ å°„ç£ç›˜
-     * @param exsitsUrlsStr æ•°æ®åº“ä¸­åŸæœ‰çš„urlä¸²
-     * @param deleteURL ä¼ å…¥çš„åˆ é™¤åœ°å€deleteURL
+     * É¾³ıÔ­ÓĞµÄurl´®ÖĞµÄ´«ÈëµÄÉ¾³ıµØÖ·deleteURL£¬²¢¸üĞÂ×îĞÂµÄURL´®·µ»Ø
+     * @param fileUploadRoot ¸ùÂ·¾¶£¬ÉÏ´«ÎÄ¼şÂ·¾¶£¬ÍøÂçÓ³Éä´ÅÅÌ
+     * @param exsitsUrlsStr Êı¾İ¿âÖĞÔ­ÓĞµÄurl´®
+     * @param deleteURL ´«ÈëµÄÉ¾³ıµØÖ·deleteURL
      * @return
      */
     public static String getFinalUrlsString(String fileUploadRoot, String exsitsUrlsStr, String deleteURL)
@@ -269,8 +269,8 @@ public class Utils {
         String filePath = (fileUploadRoot + url).replace("/", "\\");
         File file = new File(filePath);
         if (file.exists())
-            file.delete();//åˆ é™¤ç£ç›˜æ–‡ä»¶
-        // æ›´æ–°æ•°æ®åº“ä¸­çš„urlå€¼
+            file.delete();//É¾³ı´ÅÅÌÎÄ¼ş
+        // ¸üĞÂÊı¾İ¿âÖĞµÄurlÖµ
         if (exsitsUrls.length == 1)
             exsitsUrlsStr = "";
         else
