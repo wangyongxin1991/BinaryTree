@@ -20,47 +20,67 @@ package cn.tedu;
 public class BinarySortTree
 {
 
-    private BTSNode root = null;
-
-    public void insert(int value)
+    private BTSNode root;
+    //TODO 查找数据
+    public void searchkey()
     {
-        BTSNode p = root;
-        //存放前一个的节点
-        BTSNode pre = null;
 
-        //如果节点不为空,遍历二叉树  TODO 出现死循环
-        while (Utils.objectIsNotEmpty(p))
-        {
-            pre = p;
-            if (Utils.compare(value, p.getValue()))
-            {
-                p.getRightNode();
-            } else if (Utils.compare(p.getValue(), value))
-            {
-                p.getLeftNode();
-            } else
-            {
-                return;
-            }
+    }
 
-        }
 
+    //TODO 输出的值不对
+    public BTSNode insert(int val)
+    {
+        //存放临时值得临时的节点
+        BTSNode pre = new BTSNode();
+        pre.setValue(val);
         // 根节点为空
-        if (Utils.objectIsEmpty(p))
+        if (Utils.objectIsEmpty(root))
             //如果根节点为空,把值存到根节点
-            root = new BTSNode(value);
-        else if (Utils.compare(value, p.getValue()))
-            //如果插入的值比根节点大 ,把新节点放到右子树
-            pre.setRightNode(new BTSNode(value));
+            root = pre;
         else
-            //如果插入的值比根节点小 , 把新节点放到左子树
-            pre.setLeftNode(new BTSNode(value));
+        {
+            BTSNode q = this.root;
+            while (true)
+            {
+                if (Utils.compare(val, q.getValue()))
+                {
+                    //节点是空的节点才能插入
+                    if (Utils.objectIsEmpty(q.getRightNode()))
+                    {
+                        q.setRightNode(pre);
+                        visit(q);
+                        break;
+                    } else
+                    {
+                        //如果节点不空 , 继续遍历下一个节点
+                        q = q.getRightNode();
+                    }
+                } else if (Utils.compare(root.getValue(), val))
+                {
+                    //空节点
+                    if (Utils.objectIsEmpty(q.getLeftNode()))
+                    {
+                        q.setLeftNode(pre);
+                        break;
+                    } else
+                    {
+                        q = q.getLeftNode();
+                    }
+                } else
+                {
+                    System.out.println(pre.getValue() + "节点存在!");
+                    break;
+                }
+            }
+        }
+        return pre;
     }
     //访问节点
-    public static void visit(BinarySortTree p)
+    public static void visit(BTSNode p)
     {
 
-        System.out.println(p.toString() + " ");
+        System.out.println(p.getValue() + "节点插入");
     }
     /**
       * @Method main()
@@ -72,11 +92,11 @@ public class BinarySortTree
     {
         BinarySortTree tree = new BinarySortTree();
         int[] num =
-        {4, 7, 2, 1, 10, 6, 9, 3, 8, 11, 2, 0, -2};
+        {4, 7, 2, 1, 10, 6, 9, 3, 8, 11, 5};
         for (int i = 0; i < num.length; i++)
         {
             tree.insert(num[i]);
-            System.out.println(num[i]);
+
         }
 
     }

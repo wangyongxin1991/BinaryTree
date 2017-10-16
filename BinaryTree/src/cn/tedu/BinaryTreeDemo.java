@@ -3,6 +3,7 @@
  */
 package cn.tedu;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
@@ -48,6 +49,36 @@ public class BinaryTreeDemo
 
         return h;
     }
+
+    //二叉树的层次遍历
+    public static void eigodic(BTNode root)
+    {
+
+        if (Utils.objectIsEmpty(root))
+            return;
+
+        BTNode current = null;
+        LinkedList<BTNode> list = new LinkedList<>();
+        list.offer(root);
+        while (Utils.objectIsNotEmpty(list))
+        {
+            current = list.poll();//取出队头元素
+            if (Utils.objectIsEmpty(current))
+                return;
+            System.out.println(current.getKey() + "--");
+            //如果左节点不空 , 取出左节点 ,放到队列
+            if (Utils.objectIsNotEmpty(current.getLeft()))
+            {
+                list.offer(current.getLeft());
+            }
+            if (Utils.objectIsNotEmpty(current.getRight()))
+            {
+                list.offer(current.getRight());
+            }
+        }
+
+    }
+
     //访问节点
     public static void visit(BTNode p)
     {
@@ -97,7 +128,8 @@ public class BinaryTreeDemo
         BinaryTreeDemo binary = new BinaryTreeDemo(init());
 
         System.out.print(" 递归实现前序遍历:");
-        unrecursion(binary.getRoot());
+        //unrecursion(binary.getRoot());
+        eigodic(binary.getRoot());
         System.out.println("\n");
     }
 
