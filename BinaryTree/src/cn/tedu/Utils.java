@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 /**
- * 所有工具方法大杂烩
+ * 工具包
  * 
  * @author 刘青松
  * 
