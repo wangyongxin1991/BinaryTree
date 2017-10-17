@@ -31,16 +31,20 @@ public class BinarySortTree
     //TODO 输出的值不对
     public BTSNode insert(int val)
     {
-        //存放临时值得临时的节点
+        // 存放临时值的临时的节点
         BTSNode pre = new BTSNode();
         pre.setValue(val);
         // 根节点为空
         if (Utils.objectIsEmpty(root))
+        {
             //如果根节点为空,把值存到根节点
             root = pre;
+            System.out.println(root.getValue() + "根节点插入");
+            return root;
+        }
         else
         {
-            BTSNode q = this.root;
+            BTSNode q = pre;
             while (true)
             {
                 if (Utils.compare(val, q.getValue()))
@@ -49,12 +53,12 @@ public class BinarySortTree
                     if (Utils.objectIsEmpty(q.getRightNode()))
                     {
                         q.setRightNode(pre);
-                        visit(q);
                         break;
                     } else
                     {
                         //如果节点不空 , 继续遍历下一个节点
                         q = q.getRightNode();
+                        System.out.println(q.getValue() + "遍历右节点");
                     }
                 } else if (Utils.compare(root.getValue(), val))
                 {
@@ -69,7 +73,7 @@ public class BinarySortTree
                     }
                 } else
                 {
-                    System.out.println(pre.getValue() + "节点存在!");
+
                     break;
                 }
             }
@@ -95,7 +99,8 @@ public class BinarySortTree
         {4, 7, 2, 1, 10, 6, 9, 3, 8, 11, 5};
         for (int i = 0; i < num.length; i++)
         {
-            tree.insert(num[i]);
+            BTSNode node = tree.insert(num[i]);
+            System.out.println(node.getValue() + "--node");
 
         }
 
