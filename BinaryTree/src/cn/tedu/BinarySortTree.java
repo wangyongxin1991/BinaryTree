@@ -28,7 +28,12 @@ public class BinarySortTree
     }
 
 
-    //TODO 输出的值不对
+    /**
+      * @Method insert()
+      * @TODO   批量插入数据
+      * @return BTSNode
+      * @throws Exception
+     */
     public BTSNode insert(int val)
     {
         // 存放临时值的临时的节点
@@ -73,7 +78,6 @@ public class BinarySortTree
                     }
                 } else
                 {
-
                     break;
                 }
             }
