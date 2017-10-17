@@ -21,16 +21,17 @@ public class BinarySortTree
 {
 
     private BTSNode root;
-    //TODO 查找数据
-    public void searchkey()
+    //TODO 遍历所有数据,判断是否有重复
+    public boolean search(int value)
     {
 
+        return false;
     }
 
 
     /**
       * @Method insert()
-      * @TODO   批量插入数据
+      * @TODO   按一定顺序批量插入数据或插入数据,数据不能重复
       * @return BTSNode
       * @throws Exception
      */
@@ -52,18 +53,19 @@ public class BinarySortTree
             BTSNode q = pre;
             while (true)
             {
-                if (Utils.compare(val, q.getValue()))
+                if (Utils.compare(val, root.getValue()))
                 {
-                    //节点是空的节点才能插入
+                    //空的节点才能插入
                     if (Utils.objectIsEmpty(q.getRightNode()))
                     {
                         q.setRightNode(pre);
+                        System.out.println(q.getValue() + "插入右子树");
                         break;
                     } else
                     {
                         //如果节点不空 , 继续遍历下一个节点
                         q = q.getRightNode();
-                        System.out.println(q.getValue() + "遍历右节点");
+                        //System.out.println(q.getValue() + "遍历右节点");
                     }
                 } else if (Utils.compare(root.getValue(), val))
                 {
@@ -71,6 +73,7 @@ public class BinarySortTree
                     if (Utils.objectIsEmpty(q.getLeftNode()))
                     {
                         q.setLeftNode(pre);
+                        System.out.println(q.getValue() + "插入左子树");
                         break;
                     } else
                     {
