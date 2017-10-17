@@ -21,78 +21,78 @@ public class BinarySortTree
 {
 
     private BTSNode root;
-    //TODO 遍历所有数据,判断是否有重复
-    public boolean search(int value)
-    {
-
-        return false;
-    }
-
+    // 存放临时值的临时的节点
+    BTSNode pre = null;
 
     /**
       * @Method insert()
-      * @TODO   按一定顺序批量插入数据或插入数据,数据不能重复
+      * @TODO   按一定顺序批量插入数据或插入数据,数据不能重复  TODO 插入的值不对
       * @return BTSNode
       * @throws Exception
      */
-    public BTSNode insert(int val)
+    public BTSNode insert(BTSNode node)
     {
-        // 存放临时值的临时的节点
-        BTSNode pre = new BTSNode();
-        pre.setValue(val);
+
         // 根节点为空
         if (Utils.objectIsEmpty(root))
         {
             //如果根节点为空,把值存到根节点
-            root = pre;
-            System.out.println(root.getValue() + "根节点插入");
-            return root;
+            root = node;
+            //临时节点赋初值
+            pre = node;
+            //System.out.println(root.getValue() + "根节点插入");
         }
         else
         {
-            BTSNode q = pre;
             while (true)
             {
-                if (Utils.compare(val, root.getValue()))
+                //新节点比临时节点大  并且 比根节点大
+                if (Utils.compare(node.getValue(), root.getValue()))
                 {
                     //空的节点才能插入
-                    if (Utils.objectIsEmpty(q.getRightNode()))
+                    if (Utils.objectIsEmpty(root.getRightNode()))
                     {
-                        q.setRightNode(pre);
-                        System.out.println(q.getValue() + "插入右子树");
+                        root.setRightNode(node);
+                        //临时节点=新节点
+                        pre = node;
+                        // System.out.println(pre.getValue() + "插入右子树");
                         break;
                     } else
                     {
                         //如果节点不空 , 继续遍历下一个节点
-                        q = q.getRightNode();
+                        root = root.getRightNode();
                         //System.out.println(q.getValue() + "遍历右节点");
                     }
-                } else if (Utils.compare(root.getValue(), val))
+                } else if ( Utils.compare(root.getValue(), node.getValue()))
+
                 {
                     //空节点
-                    if (Utils.objectIsEmpty(q.getLeftNode()))
+                    if (Utils.objectIsEmpty(root.getLeftNode()))
                     {
-                        q.setLeftNode(pre);
-                        System.out.println(q.getValue() + "插入左子树");
+                        root.setLeftNode(node);
+                        pre = node;
+                        //System.out.println(pre.getValue() + "插入左子树");
                         break;
                     } else
                     {
-                        q = q.getLeftNode();
+                        root = root.getLeftNode();
                     }
+                } else if (root.getValue() == pre.getValue())
+                {
+                    System.out.println(pre.getValue() + "数据不能重复");
+                    return pre;
                 } else
                 {
-                    break;
+
+                    return root;
                 }
             }
         }
-        return pre;
+        return root;
     }
-    //访问节点
-    public static void visit(BTSNode p)
-    {
 
-        System.out.println(p.getValue() + "节点插入");
-    }
+
+
     /**
       * @Method main()
       * @TODO   
@@ -102,15 +102,37 @@ public class BinarySortTree
     public static void main(String[] args)
     {
         BinarySortTree tree = new BinarySortTree();
+        BTSNode node = null;
         int[] num =
-        {4, 7, 2, 1, 10, 6, 9, 3, 8, 11, 5};
+        {4, 2, 7, 1, 10, 6, 9, 3, 8, 11, 5};
         for (int i = 0; i < num.length; i++)
         {
-            BTSNode node = tree.insert(num[i]);
-            System.out.println(node.getValue() + "--node");
-
+            node = tree.insert(new BTSNode(num[i]));
         }
 
+        preorder(node);
+
+    }
+    //访问节点
+    public static void visit(BTNode p)
+    {
+        System.out.println(p.getKey() + " ");
     }
 
+    // 递归实现前序遍历  
+    protected static void preorder(BTSNode p)
+    {
+        if (p != null)
+        {
+            visit(p);
+            preorder(p.getLeftNode());
+            preorder(p.getRightNode());
+        }
+    }
+    //访问节点
+    public static void visit(BTSNode p)
+    {
+
+        System.out.println(p.getValue());
+    }
 }
