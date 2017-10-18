@@ -27,7 +27,6 @@ public class BinarySortTree
     public BTSNode insert(BTSNode node)
     {
         BTSNode nodeNow = root;
-        boolean flag = true;
         // 根节点为空
         if (Utils.objectIsEmpty(root))
         {
@@ -69,7 +68,6 @@ public class BinarySortTree
             } else if (node.getValue() == nodeNow.getValue())
               {
                 System.out.println(nodeNow.getValue() + "数据重复");
-                flag = false;
                 break;
             }
         }
