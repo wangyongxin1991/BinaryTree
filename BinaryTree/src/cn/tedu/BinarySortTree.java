@@ -13,16 +13,10 @@ package cn.tedu;
  * 2)若左子树不空,则左子树的所有节点小于根节点
  * 3)若右子树不空,则右子树的所有节点大于根节点
  * 4)左右子树也是二叉排序树
- * 
- * 
- * 
  */
 public class BinarySortTree
 {
-
     private BTSNode root;
-    // 存放临时值的临时的节点
-    BTSNode pre = null;
 
     /**
       * @Method insert()
@@ -32,66 +26,55 @@ public class BinarySortTree
      */
     public BTSNode insert(BTSNode node)
     {
-
+        BTSNode nodeNow = root;
+        boolean flag = true;
         // 根节点为空
         if (Utils.objectIsEmpty(root))
         {
             //如果根节点为空,把值存到根节点
             root = node;
-            //临时节点赋初值
-            pre = node;
             //System.out.println(root.getValue() + "根节点插入");
+            return root;
         }
-        else
-        {
-            while (true)
+
+        while (Utils.objectIsNotEmpty(nodeNow))
             {
                 //新节点比临时节点大  并且 比根节点大
-                if (Utils.compare(node.getValue(), root.getValue()))
+            if (Utils.compare(node.getValue(), nodeNow.getValue()))
                 {
                     //空的节点才能插入
-                    if (Utils.objectIsEmpty(root.getRightNode()))
+                if (Utils.objectIsEmpty(nodeNow.getRightNode()))
                     {
-                        root.setRightNode(node);
-                        //临时节点=新节点
-                        pre = node;
+                    nodeNow.setRightNode(node);
                         // System.out.println(pre.getValue() + "插入右子树");
                         break;
                     } else
                     {
                         //如果节点不空 , 继续遍历下一个节点
-                        root = root.getRightNode();
+                    nodeNow = nodeNow.getRightNode();
                         //System.out.println(q.getValue() + "遍历右节点");
                     }
-                } else if ( Utils.compare(root.getValue(), node.getValue()))
-
+            } else if (Utils.compare(nodeNow.getValue(), node.getValue()))
                 {
                     //空节点
-                    if (Utils.objectIsEmpty(root.getLeftNode()))
+                if (Utils.objectIsEmpty(nodeNow.getLeftNode()))
                     {
-                        root.setLeftNode(node);
-                        pre = node;
+                    nodeNow.setLeftNode(node);
                         //System.out.println(pre.getValue() + "插入左子树");
                         break;
                     } else
                     {
-                        root = root.getLeftNode();
+                    nodeNow = nodeNow.getLeftNode();
                     }
-                } else if (root.getValue() == pre.getValue())
-                {
-                    System.out.println(pre.getValue() + "数据不能重复");
-                    return pre;
-                } else
-                {
-
-                    return root;
-                }
+            } else if (node.getValue() == nodeNow.getValue())
+              {
+                System.out.println(nodeNow.getValue() + "数据重复");
+                flag = false;
+                break;
             }
         }
         return root;
     }
-
-
 
     /**
       * @Method main()
@@ -109,7 +92,7 @@ public class BinarySortTree
         {
             node = tree.insert(new BTSNode(num[i]));
         }
-
+        System.out.println("中序遍历结果:");
         preorder(node);
 
     }
@@ -124,15 +107,14 @@ public class BinarySortTree
     {
         if (p != null)
         {
-            visit(p);
             preorder(p.getLeftNode());
+            visit(p);
             preorder(p.getRightNode());
         }
     }
     //访问节点
     public static void visit(BTSNode p)
     {
-
         System.out.println(p.getValue());
     }
 }
