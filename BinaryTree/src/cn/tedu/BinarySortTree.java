@@ -3,6 +3,8 @@
  */
 package cn.tedu;
 
+import java.util.LinkedList;
+
 /**
  * @ClassName BinarySortTree
  * @author  wyx
@@ -91,13 +93,37 @@ public class BinarySortTree
             node = tree.insert(new BTSNode(num[i]));
         }
         System.out.println("中序遍历结果:");
-        preorder(node);
-
+        //preorder(node);
+        eigodic(node);
     }
-    //访问节点
-    public static void visit(BTNode p)
+
+    //二叉树的层次遍历
+    public static void eigodic(BTSNode root)
     {
-        System.out.println(p.getKey() + " ");
+        if (Utils.objectIsEmpty(root))
+            return;
+
+        BTSNode current = null;
+        LinkedList<BTSNode> list = new LinkedList<>();
+        list.offer(root);
+        while (Utils.objectIsNotEmpty(list))
+        {
+            current = list.poll();//取出队头元素
+            if (Utils.objectIsEmpty(current))
+            {
+                return;
+            }
+            System.out.print(current.getValue() + "--");
+            //如果左节点不空 , 取出左节点 ,放到队列
+            if (Utils.objectIsNotEmpty(current.getLeftNode()))
+            {
+                list.offer(current.getLeftNode());
+            }
+            if (Utils.objectIsNotEmpty(current.getRightNode()))
+            {
+                list.offer(current.getRightNode());
+            }
+        }
     }
 
     // 递归实现前序遍历  
