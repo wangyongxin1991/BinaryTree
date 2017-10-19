@@ -18,7 +18,7 @@ import java.util.LinkedList;
  */
 public class BinarySortTree
 {
-    private BTSNode root;
+    private static BSTNode root;
 
     /**
       * @Method insert()
@@ -26,9 +26,9 @@ public class BinarySortTree
       * @return BTSNode
       * @throws Exception
      */
-    public BTSNode insert(BTSNode node)
+    public BSTNode insert(BSTNode node)
     {
-        BTSNode nodeNow = root;
+        BSTNode nodeNow = root;
         // 根节点为空
         if (Utils.objectIsEmpty(root))
         {
@@ -77,6 +77,73 @@ public class BinarySortTree
     }
 
     /**
+      * @Method deleteNode()
+      * @TODO  删除一个节点   TODO 未测试
+      * @return void
+      * @throws Exception
+     */
+    public static BSTNode deleteNode(BSTNode newNode)
+    {
+        BSTNode temp = new BSTNode();
+        BSTNode parent = root;
+        boolean isLeftNode = false;
+        if (Utils.objectIsEmpty(root))
+        {
+            return root;
+        }
+        temp = root;
+        while (Utils.objectIsNotEmpty(temp))
+        {
+            parent = temp;
+            //比较当前节点,如果小于当前节点就遍历左子树
+            if (Utils.compare(temp.getValue(), newNode.getValue()))
+            {
+                isLeftNode = true;
+                temp = temp.getLeftNode();
+                //比较当前节点,如果大于当前节点就遍历左子树
+            } else if (Utils.compare(newNode.getValue(), temp.getValue()))
+            {
+                isLeftNode = false;
+                temp = temp.getRightNode();
+            } else if (newNode.getValue() == temp.getValue())
+            {
+                BSTNode LNode = null;
+                if(Utils.objectIsNotEmpty(temp.getRightNode()))
+                    LNode = temp.getRightNode();
+                //判断当前节点是否是叶子节点
+                if (Utils.objectIsEmpty(temp.getLeftNode()) && Utils.objectIsEmpty(temp.getRightNode()))
+                {
+                    if (isLeftNode == true)
+                    {
+                        parent.setLeftNode(null);
+                    }
+                    if (isLeftNode == false)
+                    {
+                        parent.setRightNode(null);
+                    }
+                    break;
+                    //如果当前节点不是叶子节点 ,遍历当前节点的左子树 ,如果左子树有右节点,让右节点代替删除的位置. 没有右节点,让当前节点的左子树的根节点代替删除的节点
+                } else if (Utils.objectIsNotEmpty(temp.getLeftNode()) && Utils.objectIsNotEmpty(temp.getRightNode()))
+                {
+                    temp = temp.getRightNode();
+                    parent.setLeftNode(temp);
+                    temp.setRightNode(LNode);
+
+                    break;
+
+                    // 没有右节点,让当前节点的左子树的根节点代替删除的节点
+                } else
+                {
+                    parent.setLeftNode(temp.getLeftNode());
+                    break;
+                }
+            }
+        }
+        return root;
+
+    }
+
+    /**
       * @Method main()
       * @TODO   
       * @return void
@@ -85,26 +152,27 @@ public class BinarySortTree
     public static void main(String[] args)
     {
         BinarySortTree tree = new BinarySortTree();
-        BTSNode node = null;
+        BSTNode node = null;
         int[] num =
         {4, 2, 7, 1, 10, 6, 9, 3, 8, 11, 5};
         for (int i = 0; i < num.length; i++)
         {
-            node = tree.insert(new BTSNode(num[i]));
+            node = tree.insert(new BSTNode(num[i]));
         }
         System.out.println("中序遍历结果:");
         //preorder(node);
+        deleteNode(new BSTNode(11));
         eigodic(node);
     }
 
     //二叉树的层次遍历
-    public static void eigodic(BTSNode root)
+    public static void eigodic(BSTNode root)
     {
         if (Utils.objectIsEmpty(root))
             return;
 
-        BTSNode current = null;
-        LinkedList<BTSNode> list = new LinkedList<>();
+        BSTNode current = null;
+        LinkedList<BSTNode> list = new LinkedList<>();
         list.offer(root);
         while (Utils.objectIsNotEmpty(list))
         {
@@ -113,7 +181,7 @@ public class BinarySortTree
             {
                 return;
             }
-            System.out.print(current.getValue() + "--");
+            System.out.println(current.getValue() + "--");
             //如果左节点不空 , 取出左节点 ,放到队列
             if (Utils.objectIsNotEmpty(current.getLeftNode()))
             {
@@ -127,7 +195,7 @@ public class BinarySortTree
     }
 
     // 递归实现前序遍历  
-    protected static void preorder(BTSNode p)
+    protected static void preorder(BSTNode p)
     {
         if (p != null)
         {
@@ -137,7 +205,7 @@ public class BinarySortTree
         }
     }
     //访问节点
-    public static void visit(BTSNode p)
+    public static void visit(BSTNode p)
     {
         System.out.println(p.getValue());
     }

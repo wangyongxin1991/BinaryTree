@@ -9,14 +9,14 @@ package cn.tedu;
  * @author  wyx
  * @date 2017年10月15日 下午10:38:35
  */
-public class BTSNode
+public class BSTNode
 {
     private int value;
-    private BTSNode LeftNode, RightNode;
+    private BSTNode LeftNode, RightNode;
     /**
      * @构造方法
      */
-    public BTSNode(int value, BTSNode leftNode, BTSNode rightNode)
+    public BSTNode(int value, BSTNode leftNode, BSTNode rightNode)
     {
         this.value = value;
         LeftNode = leftNode;
@@ -26,7 +26,7 @@ public class BTSNode
     /**
      * @构造方法
      */
-    public BTSNode(int value)
+    public BSTNode(int value)
     {
         super();
         this.value = value;
@@ -35,10 +35,12 @@ public class BTSNode
     /**
      * @无参构造方法
      */
-    public BTSNode()
+    public BSTNode()
     {
         super();
     }
+
+
 
     public int getValue()
     {
@@ -48,19 +50,19 @@ public class BTSNode
     {
         this.value = value;
     }
-    public BTSNode getLeftNode()
+    public BSTNode getLeftNode()
     {
         return LeftNode;
     }
-    public void setLeftNode(BTSNode leftNode)
+    public void setLeftNode(BSTNode leftNode)
     {
         LeftNode = leftNode;
     }
-    public BTSNode getRightNode()
+    public BSTNode getRightNode()
     {
         return RightNode;
     }
-    public void setRightNode(BTSNode rightNode)
+    public void setRightNode(BSTNode rightNode)
     {
         RightNode = rightNode;
     }
