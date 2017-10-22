@@ -5,7 +5,7 @@ package cn.tedu;
 
 /**
  * @ClassName BTSNode
- * @Describe TODO
+ * @Describe 构造二叉树节点的类
  * @author  wyx
  * @date 2017年10月15日 下午10:38:35
  */
