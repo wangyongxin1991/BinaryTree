@@ -5,7 +5,7 @@ package cn.tedu;
 
 /**
  * @ClassName BTSNode
- * @Describe 
+ * @Describe TODO
  * @author  wyx
  * @date 2017年10月15日 下午10:38:35
  */
@@ -39,8 +39,6 @@ public class BSTNode
     {
         super();
     }
-
-
 
     public int getValue()
     {
