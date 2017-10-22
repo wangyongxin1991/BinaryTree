@@ -3,8 +3,6 @@
  */
 package cn.tedu;
 
-import java.util.LinkedList;
-
 /**
  * @ClassName BinarySortTree
  * @author  wyx
@@ -183,7 +181,6 @@ public class BinarySortTree<T extends Comparable<? super T>>
                     parent.setRightNode(temp.getLeftNode());
                     break;
                 }
-
             }
         }
         return root;
@@ -198,7 +195,6 @@ public class BinarySortTree<T extends Comparable<? super T>>
       */
     public static void main(String[] args)
     {
-       
         BinarySortTree<String> tree = new BinarySortTree<String>();
         BSTNode node = null;
         int[] num =
@@ -210,42 +206,12 @@ public class BinarySortTree<T extends Comparable<? super T>>
         }
         System.out.println("中序遍历结果:");
         // preorder(node);
-
+        //删除结果中序查看
         BSTNode deleteNode = deleteNode(new BSTNode(7));
         preorder(deleteNode);
-        //eigodic(node);
     }
 
-    //二叉树的层次遍历
-    public static void eigodic(BSTNode root)
-    {
-        if (Utils.objectIsEmpty(root))
-            return;
-
-        BSTNode current = null;
-        LinkedList<BSTNode> list = new LinkedList<>();
-        list.offer(root);
-        while (Utils.objectIsNotEmpty(list))
-        {
-            current = list.poll();//取出队头元素
-            if (Utils.objectIsEmpty(current))
-            {
-                return;
-            }
-            System.out.println(current.getValue() + "--");
-            //如果左节点不空 , 取出左节点 ,放到队列
-            if (Utils.objectIsNotEmpty(current.getLeftNode()))
-            {
-                list.offer(current.getLeftNode());
-            }
-            if (Utils.objectIsNotEmpty(current.getRightNode()))
-            {
-                list.offer(current.getRightNode());
-            }
-        }
-    }
-
-    // 递归实现前序遍历  
+    // 递归实现中序遍历  
     protected static void preorder(BSTNode p)
     {
         if (p != null)
