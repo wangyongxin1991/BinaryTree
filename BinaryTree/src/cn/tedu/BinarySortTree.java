@@ -13,6 +13,8 @@ package cn.tedu;
  * 2)若左子树不空,则左子树的所有节点小于根节点
  * 3)若右子树不空,则右子树的所有节点大于根节点
  * 4)左右子树也是二叉排序树
+ * 5)查找最大,最小值
+ * 6)查找某个节点
  */
 public class BinarySortTree<T extends Comparable<? super T>>
 {
@@ -56,11 +58,10 @@ public class BinarySortTree<T extends Comparable<? super T>>
         size++;
         return true;
     }*/
-    private static BSTNode node;
 
     /**
       * @Method insert()
-      * @TODO   按一定顺序批量插入数据或插入数据,数据不能重复    TODO BUG插入的数不对
+      * @TODO   按一定顺序批量插入数据或插入数据,数据不能重复  
       * @return BTSNode
       * @throws Exception
      */
@@ -110,6 +111,83 @@ public class BinarySortTree<T extends Comparable<? super T>>
             }
         }
         return root;
+    }
+
+    /**
+      * @Method searchMax()
+      * @Describe    查找最大值
+      * @return BSTNode
+      * @throws Exception
+     */
+    public BSTNode searchMax(BSTNode newNode)
+    {
+        BSTNode rightNode = null;
+        if (root == null)
+        {
+            root = new BSTNode();
+            return root;
+        }
+        if (newNode == null)
+            throw new NullPointerException();
+        while (Utils.objectIsNotEmpty(root))
+        {
+            rightNode = root.getRightNode();
+        }
+        return rightNode;
+    }
+
+    /**
+      * @Method searchMin()
+      * @Descirbe 查找最小值   
+      * @return BSTNode
+      * @throws Exception
+     */
+    public BSTNode searchMin(BSTNode newNode)
+    {
+        if (Utils.objectIsEmpty(root))
+        {
+            root = new BSTNode();
+            return root;
+        }
+        if (Utils.objectIsEmpty(newNode))
+            throw new NullPointerException();
+        BSTNode leftNode = null;
+        while (Utils.objectIsNotEmpty(root))
+        {
+            leftNode = root.getLeftNode();
+        }
+        return leftNode;
+    }
+
+    /**
+      * @Method searchOne()
+      * @Describe 查找某个值   
+      * @return BSTNode
+      * @throws Exception
+     */
+    public static BSTNode searchOne(BSTNode newNode)
+    {
+        if (Utils.objectIsEmpty(root))
+        {
+            root = new BSTNode();
+            return root;
+        }
+        if (Utils.objectIsEmpty(newNode))
+            throw new NullPointerException();
+
+        BSTNode tempNode = new BSTNode();
+        tempNode = root;
+        while (Utils.objectIsNotEmpty(tempNode))
+        {
+            if(Utils.compare(tempNode.getValue(), newNode.getValue()))
+                tempNode = tempNode.getLeftNode();
+            if(Utils.compare(newNode.getValue(), tempNode.getValue()))
+                tempNode = tempNode.getRightNode();
+            if (newNode.getValue() == tempNode.getValue())
+                break;
+        }
+
+        return tempNode;
     }
 
     /**
@@ -184,7 +262,6 @@ public class BinarySortTree<T extends Comparable<? super T>>
             }
         }
         return root;
-       
     }
 
     /**
@@ -204,11 +281,15 @@ public class BinarySortTree<T extends Comparable<? super T>>
             //tree.insert(String.valueOf(num[i]));
             node = insert(new BSTNode(num[i]));
         }
+
+        BSTNode one = searchOne(new BSTNode(17));
+        System.out.println("find Result: " + one.getValue());
+
         System.out.println("中序遍历结果:");
         // preorder(node);
         //删除结果中序查看
-        BSTNode deleteNode = deleteNode(new BSTNode(7));
-        preorder(deleteNode);
+        // BSTNode deleteNode = deleteNode(new BSTNode(7));
+        //preorder(deleteNode);
     }
 
     // 递归实现中序遍历  
