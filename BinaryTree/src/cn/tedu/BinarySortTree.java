@@ -3,6 +3,9 @@
  */
 package cn.tedu;
 
+import java.util.LinkedList;
+import java.util.Stack;
+
 /**
  * @ClassName BinarySortTree
  * @author  wyx
@@ -15,49 +18,88 @@ package cn.tedu;
  * 4)左右子树也是二叉排序树
  * 5)查找最大,最小值
  * 6)查找某个节点
+ * 7)TODO 二叉查找树的最近公共父亲节点
+ * 8)TODO 输出到当前节点的所有路径，也就是当前节点的所有父亲节点集合
+ *        这个实现其实是根据中序遍历得到的，采用中序遍历的方式查找节点，
+ *        当查找到当前节点的时候堆栈中保存的就是当前节点以及当前节点的所有父亲节点。
+ * 9)深度优先  ,广度优先
+ * 10)红黑树
  */
 public class BinarySortTree<T extends Comparable<? super T>>
 {
     private static BSTNode root;
-    //private TreeNode<T> root;  
-    /* private int size = 0;
-    
-    //new  insert2()
-    public boolean insert2(T e)
+
+    /**
+      * @Method deepSearch()
+      * 英文缩写为DFS即Depth First Search
+      * @Descirbe  深度优先搜索
+      *          A
+      *         / \ 
+      *        B   C
+      *       / \ / \
+      *      D   EF  G
+      * 首先将A节点压入堆中，stack（A）;
+      * 将A节点弹出，同时将A的子节点C，B压入堆中，此时B在堆的顶部，stack(B,C)；
+      * 将B节点弹出，同时将B的子节点E，D压入堆中，此时D在堆的顶部，stack（D,E,C）；
+      * 将D节点弹出，没有子节点压入,此时E在堆的顶部，stack（E，C）；
+      * 将E节点弹出，同时将E的子节点I压入，stack（I,C）；
+      * @return BSTNode
+      * @throws Exception
+     */
+    public static BSTNode deepSearch()
     {
-        if (root == null)
+        Stack<BSTNode> stack = new Stack<>();
+        if (Utils.objectIsNotEmpty(root))
+            stack.push(root);
+
+        while (Utils.objectIsNotEmpty(stack))
         {
-            root = new BSTNode<T>(null, e, null);
-            size = 1;
-            return true;
+            BSTNode topNode = stack.pop();
+            System.out.println(topNode.getValue());
+            if (Utils.objectIsNotEmpty(topNode.getRightNode()))
+            {
+                stack.push(topNode.getRightNode());
+            }
+            if (Utils.objectIsNotEmpty(topNode.getLeftNode()))
+            {
+                stack.push(topNode.getLeftNode());
+            }
         }
-        if (e == null)
-            throw new NullPointerException();
-        Comparable<? super T> nodevalue = e;
-        BSTNode<T> t = root;
-        BSTNode<T> parent = null;
-        int compareResult = 0;
-    
-        while (t != null)
+        return null;
+    }
+
+    /**
+      * @Method BreadthFristSearch()
+      * @Descirbe 广度优先搜索  英文缩写为BFS即Breadth FirstSearch
+      *          A
+      *         / \ 
+      *        B   C
+      *       / \ / \
+      *      D   EF  G
+      * 广度优先就是按层次遍历树, 借助队列实现广度优先遍历 ,此树的广度优先顺序:ABCDEFG
+      * @throws Exception
+     */
+    public static void BreadthFristSearch()
+    {
+        LinkedList<BSTNode> list = new LinkedList<>();
+        BSTNode topNode = null;
+
+        if (Utils.objectIsNotEmpty(root))
+            list.offer(root);
+
+        while (Utils.objectIsNotEmpty(list))
         {
-            parent = t;
-            compareResult = e.compareTo(t.getValue());
-            if (compareResult > 0)
-                t = t.getRightNode();
-            else if (compareResult < 0)
-                t = t.getLeftNode();
-            else
-                return false;
+            topNode = list.poll();
+            if (Utils.objectIsEmpty(topNode))
+                return;
+            System.out.println(topNode.getValue());
+            if (Utils.objectIsNotEmpty(topNode.getLeftNode()))
+                list.offer(topNode.getLeftNode());
+            if (Utils.objectIsNotEmpty(topNode.getRightNode()))
+                list.offer(topNode.getRightNode());
         }
-    
-        BSTNode<T> node = new BSTNode<>(null, e, null);
-        if (compareResult > 0)
-            parent.setRightNode(node);
-        else
-            parent.setLeftNode(node);
-        size++;
-        return true;
-    }*/
+        return;
+    }
 
     /**
       * @Method insert()
@@ -111,6 +153,56 @@ public class BinarySortTree<T extends Comparable<? super T>>
             }
         }
         return root;
+    }
+
+    /**
+      * @Method searchParent()
+      * @Descirbe  查找两个节点的最近父节点   
+      * @return BSTNode
+      * @throws Exception
+     */
+    public static void searchParent(BSTNode root, int newNode)
+    {
+        BSTNode q = root;
+        BSTNode bt = null;
+        Stack<BSTNode> stack = new Stack<>();
+
+        while (root != null)
+        {
+            for (; root.getLeftNode() != null; root = root.getLeftNode())
+            {
+                if (root.getValue() == newNode)
+                {
+                    while (!stack.isEmpty())
+                    {
+                        bt = stack.pop();
+                        System.out.println("{" + bt + "}");
+                    }
+                    return;
+                }
+            }
+            stack.push(root);
+        }
+
+        while (root != null && (root.getRightNode() == null) || root.getRightNode() == q)
+        {
+            q = root;
+            if (stack.empty())
+                return;
+            root = stack.pop();
+        }
+
+        if (root.getValue() == newNode)
+        {
+            while (!stack.isEmpty())
+            {
+                bt = stack.pop();
+                System.out.println("{" + bt.getValue() + "}");
+            }
+            return;
+        }
+        stack.push(root);
+        root = root.getRightNode();
     }
 
     /**
@@ -186,7 +278,6 @@ public class BinarySortTree<T extends Comparable<? super T>>
             if (newNode.getValue() == tempNode.getValue())
                 break;
         }
-
         return tempNode;
     }
 
@@ -264,12 +355,29 @@ public class BinarySortTree<T extends Comparable<? super T>>
         return root;
     }
 
+    // 递归实现中序遍历  
+    protected static void preorder(BSTNode p)
+    {
+        if (p != null)
+        {
+            preorder(p.getLeftNode());
+            visit(p);
+            preorder(p.getRightNode());
+        }
+    }
+
+    //访问节点
+    public static void visit(BSTNode p)
+    {
+        System.out.println(p.getValue());
+    }
+
     /**
-      * @Method main()
-      * @TODO   
-      * @return void
-      * @throws Exception
-      */
+     * @Method main()
+     * @TODO   
+     * @return void
+     * @throws Exception
+     */
     public static void main(String[] args)
     {
         BinarySortTree<String> tree = new BinarySortTree<String>();
@@ -282,29 +390,22 @@ public class BinarySortTree<T extends Comparable<? super T>>
             node = insert(new BSTNode(num[i]));
         }
 
-        BSTNode one = searchOne(new BSTNode(17));
-        System.out.println("find Result: " + one.getValue());
-
-        System.out.println("中序遍历结果:");
-        // preorder(node);
-        //删除结果中序查看
-        // BSTNode deleteNode = deleteNode(new BSTNode(7));
-        //preorder(deleteNode);
+        //        BSTNode one = searchOne(new BSTNode(17));
+        //        System.out.println("find Result: " + one.getValue());
+        //----------------------------------------------------
+        //        System.out.println("中序遍历结果:");
+        //        preorder(node);
+        //------------------------------------------------------
+        //        删除结果中序查看
+        //        BSTNode deleteNode = deleteNode(new BSTNode(7));
+        //        preorder(deleteNode);
+        //-----------------------------------------------------
+        //        searchParent(root, 4);
+        //------------------------------------------------------
+        //        deepSearch();
+        //------------------------------------------------------
+        BreadthFristSearch();
+        System.out.println("父节点是:");
     }
 
-    // 递归实现中序遍历  
-    protected static void preorder(BSTNode p)
-    {
-        if (p != null)
-        {
-            preorder(p.getLeftNode());
-            visit(p);
-            preorder(p.getRightNode());
-        }
-    }
-    //访问节点
-    public static void visit(BSTNode p)
-    {
-        System.out.println(p.getValue());
-    }
 }

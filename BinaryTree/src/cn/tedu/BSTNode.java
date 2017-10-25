@@ -12,15 +12,17 @@ package cn.tedu;
 public class BSTNode
 {
     private int value;
-    private BSTNode LeftNode, RightNode;
+    private BSTNode LeftNode, RightNode, parent;
     /**
+     * @param parent 
      * @构造方法
      */
-    public BSTNode(int value, BSTNode leftNode, BSTNode rightNode)
+    public BSTNode(int value, BSTNode leftNode, BSTNode rightNode, BSTNode parent)
     {
         this.value = value;
         LeftNode = leftNode;
         RightNode = rightNode;
+        this.setParent(parent);
     }
 
     /**
@@ -63,6 +65,16 @@ public class BSTNode
     public void setRightNode(BSTNode rightNode)
     {
         RightNode = rightNode;
+    }
+
+    public BSTNode getParent()
+    {
+        return parent;
+    }
+
+    public void setParent(BSTNode parent)
+    {
+        this.parent = parent;
     }
 
 
