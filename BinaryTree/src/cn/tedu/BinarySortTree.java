@@ -12,22 +12,53 @@ import java.util.Stack;
  * @date 2017年10月15日 下午10:31:46
  * 
  * 二叉排序树又称二叉查找树
- * 1)可以使一颗空的树
- * 2)若左子树不空,则左子树的所有节点小于根节点
- * 3)若右子树不空,则右子树的所有节点大于根节点
- * 4)左右子树也是二叉排序树
- * 5)查找最大,最小值
- * 6)查找某个节点
- * 7)TODO 二叉查找树的最近公共父亲节点
- * 8)TODO 输出到当前节点的所有路径，也就是当前节点的所有父亲节点集合
- *        这个实现其实是根据中序遍历得到的，采用中序遍历的方式查找节点，
- *        当查找到当前节点的时候堆栈中保存的就是当前节点以及当前节点的所有父亲节点。
- * 9)深度优先  ,广度优先
- * 10)红黑树
+ * 1)按一定顺序批量插入数据或插入数据,数据不能重复  
+ * 2)删除某个节点
+ * 3)查找最大,最小值
+ * 4)查找某个节点
+ * 5)二叉查找树的最近公共父亲节点
+ * 6)深度优先  ,广度优先
+ * 7)求两个节点的距离
+ * 8)二叉树求权值最大最小叶子结点之间的距离
+ * 9)二叉树中某个节点到根节点的路径
  */
 public class BinarySortTree<T extends Comparable<? super T>>
 {
     private static BSTNode root;
+
+    /**
+      * @Method nodePath()
+      * @Descirbe   二叉树中某个节点到根节点的路径
+      * 1）压入根节点，再从左子树中查找（递归进行的），如果未找到，再从右子树中查找，如果也未找到，则弹出根节点，再遍历栈中上一个节点。
+      * 2）如果找到，则栈中存放的节点就是路径所经过的节点。
+      * @return void
+      * @throws Exception
+     */
+    public static boolean nodePath(BSTNode root, BSTNode node)
+    {
+        Stack<BSTNode> stack = new Stack<>();
+        if (Utils.objectIsEmpty(root)||Utils.objectIsEmpty(node))
+            return false;
+        if (root.getValue() == node.getValue())
+        {
+            //System.out.println(root.getValue());
+            return true;
+        }
+
+        //此处注意递归push
+        BSTNode push = stack.push(root);
+        if (push != null)
+            System.out.println(push.getValue());
+
+        boolean find = nodePath(root.getLeftNode(), node);
+        //        if (find)
+        //            System.out.println(root.getValue());
+        if (!find)
+            find = nodePath(root.getRightNode(), node);
+        if (!find)
+            stack.pop();
+        return find;
+    }
 
     /**
       * @Method deepSearch()
@@ -155,54 +186,51 @@ public class BinarySortTree<T extends Comparable<? super T>>
         return root;
     }
 
+
     /**
       * @Method searchParent()
-      * @Descirbe  查找两个节点的最近父节点   
+      * @Descirbe  递归查找两个节点的最近父节点   
+      *    1.如果两个值有一个值等于root返回root
+      *    2.两个值都在左子树或都在右子树,
+      *    3.一个值在左子树,一个值在右子树,则根节点是最近公共父节点
+      *    4.如果左右子树都没有返回root
       * @return BSTNode
       * @throws Exception
      */
-    public static void searchParent(BSTNode root, int newNode)
+    public static BSTNode searchParent(BSTNode tree, int node1, int node2)
     {
-        BSTNode q = root;
-        BSTNode bt = null;
-        Stack<BSTNode> stack = new Stack<>();
-
-        while (root != null)
+        if (Utils.objectIsEmpty(tree))
         {
-            for (; root.getLeftNode() != null; root = root.getLeftNode())
-            {
-                if (root.getValue() == newNode)
-                {
-                    while (!stack.isEmpty())
-                    {
-                        bt = stack.pop();
-                        System.out.println("{" + bt + "}");
-                    }
-                    return;
-                }
-            }
-            stack.push(root);
+            return null;
         }
 
-        while (root != null && (root.getRightNode() == null) || root.getRightNode() == q)
+        if (tree.getValue() == node1 || tree.getValue() == node2)
         {
-            q = root;
-            if (stack.empty())
-                return;
-            root = stack.pop();
+            return tree;
         }
 
-        if (root.getValue() == newNode)
+        BSTNode leftNode = searchParent(tree, node1, node2);
+        BSTNode rightNode = searchParent(tree, node1, node2);
+
+        if(Utils.objectIsEmpty(leftNode) || Utils.objectIsEmpty(rightNode))
+            return null;
+        //一个节点在左子树,一个在右子树
+        if (Utils.compare(root.getValue(), leftNode.getValue())
+                && Utils.compare(rightNode.getValue(), root.getValue()))
         {
-            while (!stack.isEmpty())
-            {
-                bt = stack.pop();
-                System.out.println("{" + bt.getValue() + "}");
-            }
-            return;
+            return root;
+            //都在左子树
+        }else if(Utils.compare(root.getValue(), leftNode.getValue())
+                &&Utils.compare(root.getValue(), rightNode.getValue())){
+            
+            //都在右子树
+        } else if (Utils.compare(leftNode.getValue(), root.getValue())
+                && Utils.compare(rightNode.getValue(), root.getValue()))
+        {
+            
         }
-        stack.push(root);
-        root = root.getRightNode();
+
+        return tree;
     }
 
     /**
@@ -402,10 +430,11 @@ public class BinarySortTree<T extends Comparable<? super T>>
         //-----------------------------------------------------
         //        searchParent(root, 4);
         //------------------------------------------------------
-        //        deepSearch();
+        // deepSearch();
         //------------------------------------------------------
-        BreadthFristSearch();
-        System.out.println("父节点是:");
+        // BreadthFristSearch();
+        //-------------------------------------------------
+        nodePath(root, new BSTNode(10));
     }
 
 }
