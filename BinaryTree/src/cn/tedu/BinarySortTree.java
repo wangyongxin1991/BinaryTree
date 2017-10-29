@@ -4,7 +4,9 @@
 package cn.tedu;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
+import java.util.Vector;
 
 /**
  * @ClassName BinarySortTree
@@ -25,10 +27,11 @@ import java.util.Stack;
 public class BinarySortTree<T extends Comparable<? super T>>
 {
     private static BSTNode root;
+    static Vector<Vector<Integer>> allpath = new Vector<Vector<Integer>>();
 
     /**
       * @Method nodePath()
-      * @Descirbe   二叉树中某个节点到根节点的路径
+      * @Descirbe   利用栈实现二叉树中某个节点到根节点的路径
       * 1）压入根节点，再从左子树中查找（递归进行的），如果未找到，再从右子树中查找，如果也未找到，则弹出根节点，再遍历栈中上一个节点。
       * 2）如果找到，则栈中存放的节点就是路径所经过的节点。
       * @return void
@@ -51,13 +54,52 @@ public class BinarySortTree<T extends Comparable<? super T>>
             System.out.println(push.getValue());
 
         boolean find = nodePath(root.getLeftNode(), node);
-        //        if (find)
-        //            System.out.println(root.getValue());
+
         if (!find)
             find = nodePath(root.getRightNode(), node);
         if (!find)
             stack.pop();
         return find;
+    }
+
+    //打印路径
+    static void printPath(Vector<Integer> path)
+    {
+        for (Integer integer : path)
+        {
+            System.out.println(integer);
+
+        }
+    }
+
+    static Vector<Integer> path = new Vector<>();
+    /**
+      * @Method findAllPath()
+      * @Descirbe 利用深度优先或广度优先寻找某个节点打印路径,并保存到Vector中,也可以保存到其他类型   
+      * @return void
+      * @throws Exception
+     */
+    public static void findAllPath(BSTNode tree, int nToFind)
+    {
+        if (tree == null)
+            return;
+
+        path.add(tree.getValue());
+
+        if (tree.getLeftNode() != null && tree.getLeftNode().getValue() == nToFind
+                || tree.getRightNode() != null && tree.getRightNode().getValue() == nToFind)
+        {
+            printPath(path);
+            allpath.add(path);
+            return;
+        }
+        if (tree.getLeftNode() != null)
+            findAllPath(tree.getLeftNode(), nToFind);
+        if (tree.getRightNode() != null)
+            findAllPath(tree.getRightNode(), nToFind);
+
+        //path.removeAllElements();;
+        return;
     }
 
     /**
@@ -87,6 +129,7 @@ public class BinarySortTree<T extends Comparable<? super T>>
         {
             BSTNode topNode = stack.pop();
             System.out.println(topNode.getValue());
+
             if (Utils.objectIsNotEmpty(topNode.getRightNode()))
             {
                 stack.push(topNode.getRightNode());
@@ -124,12 +167,41 @@ public class BinarySortTree<T extends Comparable<? super T>>
             if (Utils.objectIsEmpty(topNode))
                 return;
             System.out.println(topNode.getValue());
+
             if (Utils.objectIsNotEmpty(topNode.getLeftNode()))
                 list.offer(topNode.getLeftNode());
             if (Utils.objectIsNotEmpty(topNode.getRightNode()))
                 list.offer(topNode.getRightNode());
         }
         return;
+    }
+
+
+    static LinkedList<Integer> list = new LinkedList<>();
+    /**
+      * @Method BSearchPath()
+      * @Descirbe  查询某个值,路径保存到List集合里
+      * @return List<Integer>
+      * @throws Exception
+     */
+    public static List<Integer> BSearchPath(BSTNode tree, int nToFind)
+    {
+        if (tree == null)
+            return null;
+
+        list.add(tree.getValue());
+
+        if (tree.getLeftNode() != null && tree.getLeftNode().getValue() == nToFind
+                || tree.getRightNode() != null && tree.getRightNode().getValue() == nToFind)
+        {
+            return list;
+        }
+        if (tree.getLeftNode() != null)
+            BSearchPath(tree.getLeftNode(), nToFind);
+        if (tree.getRightNode() != null)
+            BSearchPath(tree.getRightNode(), nToFind);
+
+        return null;
     }
 
     /**
@@ -209,26 +281,20 @@ public class BinarySortTree<T extends Comparable<? super T>>
             return tree;
         }
 
-        BSTNode leftNode = searchParent(tree, node1, node2);
-        BSTNode rightNode = searchParent(tree, node1, node2);
-
-        if(Utils.objectIsEmpty(leftNode) || Utils.objectIsEmpty(rightNode))
-            return null;
-        //一个节点在左子树,一个在右子树
-        if (Utils.compare(root.getValue(), leftNode.getValue())
-                && Utils.compare(rightNode.getValue(), root.getValue()))
+        List<Integer> list1 = BSearchPath(root, node1);
+        List<Integer> list2 = BSearchPath(root, node2);
+        
+        for (int i = list1.size(); i > 0; i--)
         {
-            return root;
-            //都在左子树
-        }else if(Utils.compare(root.getValue(), leftNode.getValue())
-                &&Utils.compare(root.getValue(), rightNode.getValue())){
-            
-            //都在右子树
-        } else if (Utils.compare(leftNode.getValue(), root.getValue())
-                && Utils.compare(rightNode.getValue(), root.getValue()))
-        {
-            
+            for (int j = list2.size(); j > 0; j--)
+            {
+                if (list1.get(i).equals(list2.get(j)))
+                {
+                    System.out.println(list1.get(i));
+                }
+            }
         }
+
 
         return tree;
     }
@@ -434,7 +500,23 @@ public class BinarySortTree<T extends Comparable<? super T>>
         //------------------------------------------------------
         // BreadthFristSearch();
         //-------------------------------------------------
-        nodePath(root, new BSTNode(10));
+        // nodePath(root, new BSTNode(10));
+        //------------------------------------------------
+        //        int[] arr = nodeParentArr(root, new BSTNode(3));
+        //        for (int i : arr)
+        //        {
+        //            System.out.println(i);
+        //        }
+        //---------------------------------------------
+        //findAllPath(root, 8);
+        //------------------------------
+        //        List<Integer> list2 = BSearchPath(root, 8);
+        //        for (Integer list : list2)
+        //        {
+        //            System.out.println(list);
+        //        }
+        //----------------------------------------
+        searchParent(root, 1, 7);
     }
 
 }
