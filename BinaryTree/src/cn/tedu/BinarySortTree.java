@@ -3,8 +3,13 @@
  */
 package cn.tedu;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -23,8 +28,10 @@ import java.util.Vector;
  * 7)求两个节点的距离
  * 8)二叉树求权值最大最小叶子结点之间的距离
  * 9)二叉树中某个节点到根节点的路径
+ * 10)并查集
+ * 11)tarjan算法  LCA 最近公共祖先    Tarjan(离线)算法的基本思路及其算法实现
  */
-public class BinarySortTree<T extends Comparable<? super T>>
+public class BinarySortTree
 {
     private static BSTNode root;
     static Vector<Vector<Integer>> allpath = new Vector<Vector<Integer>>();
@@ -191,8 +198,7 @@ public class BinarySortTree<T extends Comparable<? super T>>
 
         list.add(tree.getValue());
 
-        if (tree.getLeftNode() != null && tree.getLeftNode().getValue() == nToFind
-                || tree.getRightNode() != null && tree.getRightNode().getValue() == nToFind)
+        if (tree.getLeftNode() != null && tree.getLeftNode().getValue() == nToFind)
         {
             return list;
         }
@@ -200,8 +206,11 @@ public class BinarySortTree<T extends Comparable<? super T>>
             BSearchPath(tree.getLeftNode(), nToFind);
         if (tree.getRightNode() != null)
             BSearchPath(tree.getRightNode(), nToFind);
-
-        return null;
+        if (tree.getLeftNode() == null && tree.getRightNode() == null)
+        {
+            list.remove(tree);
+        }
+        return list;
     }
 
     /**
@@ -261,7 +270,7 @@ public class BinarySortTree<T extends Comparable<? super T>>
 
     /**
       * @Method searchParent()
-      * @Descirbe  递归查找两个节点的最近父节点   
+      * @Descirbe  递归查找两个节点的最近父节点   (经典写法)
       *    1.如果两个值有一个值等于root返回root
       *    2.两个值都在左子树或都在右子树,
       *    3.一个值在左子树,一个值在右子树,则根节点是最近公共父节点
@@ -271,32 +280,14 @@ public class BinarySortTree<T extends Comparable<? super T>>
      */
     public static BSTNode searchParent(BSTNode tree, int node1, int node2)
     {
-        if (Utils.objectIsEmpty(tree))
-        {
-            return null;
-        }
-
-        if (tree.getValue() == node1 || tree.getValue() == node2)
-        {
+        if (Utils.objectIsEmpty(tree) || tree.getValue() == node1 || tree.getValue() == node2)
             return tree;
-        }
+        //递归的时候要注意递归查找的节点是左还是右
+        BSTNode leftNode = searchParent(tree.getLeftNode(), node1, node2);
 
-        List<Integer> list1 = BSearchPath(root, node1);
-        List<Integer> list2 = BSearchPath(root, node2);
+        BSTNode rightNode = searchParent(tree.getRightNode(), node1, node2);
         
-        for (int i = list1.size(); i > 0; i--)
-        {
-            for (int j = list2.size(); j > 0; j--)
-            {
-                if (list1.get(i).equals(list2.get(j)))
-                {
-                    System.out.println(list1.get(i));
-                }
-            }
-        }
-
-
-        return tree;
+        return leftNode == null && rightNode == null ? root : leftNode == null ? rightNode : leftNode;
     }
 
     /**
@@ -373,6 +364,44 @@ public class BinarySortTree<T extends Comparable<? super T>>
                 break;
         }
         return tempNode;
+    }
+    /**
+      * @Method lowestCommonAncestor()
+      * @Descirbe    用一种常见高效的数据结构来记录下二叉树中的结构关系，(非递归查找最近公共父节点)
+      * 由于是找父节点，所以要用子节点来查找父节点，我们这里用到的是HashMap来进行树形关系的存储。
+      * 接下来就是先列出一个要求节点的所有父节点，然后比较另一个要求节点的父节点在不在上面的列中，
+      * 第一个出现的节点，就是我们要求的祖先节点
+      * @return BSTNode
+      * @throws Exception
+     */
+    public BSTNode lowestCommonAncestor(BSTNode root, BSTNode p, BSTNode q)
+    {
+        Map<BSTNode, BSTNode> parent = new HashMap<>();//存储关系
+        Queue<BSTNode> queue = new LinkedList<>();//辅助队列
+        parent.put(root, null);
+        queue.add(root);
+        while (!parent.containsKey(p) || !parent.containsKey(q))
+        {
+            BSTNode node = queue.poll();
+            if (node != null)
+            {
+                parent.put(node.getLeftNode(), node);
+                parent.put(node.getRightNode(), node);
+                queue.add(node.getLeftNode());
+                queue.add(node.getRightNode());
+            }
+        }
+        Set<BSTNode> set = new HashSet<>();//p节点的所有祖先节点
+        while (p != null)
+        {
+            set.add(p);
+            p = parent.get(p);
+        }
+        while (!set.contains(q))
+        {//第一个出现的节点，就是return
+            q = parent.get(q);
+        }
+        return q;
     }
 
     /**
@@ -474,7 +503,7 @@ public class BinarySortTree<T extends Comparable<? super T>>
      */
     public static void main(String[] args)
     {
-        BinarySortTree<String> tree = new BinarySortTree<String>();
+        BinarySortTree tree = new BinarySortTree();
         BSTNode node = null;
         int[] num =
         {6, 11, 2, 7, 1, 10, 5, 9, 3, 8, 4};
@@ -516,7 +545,8 @@ public class BinarySortTree<T extends Comparable<? super T>>
         //            System.out.println(list);
         //        }
         //----------------------------------------
-        searchParent(root, 1, 7);
+        BSTNode parent = searchParent(root, 8, 9);
+        System.out.println(parent.getValue());
     }
 
 }
